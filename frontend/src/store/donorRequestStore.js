@@ -52,7 +52,8 @@ const donorRequestStore = create((set, get) => ({
           params: filters
         }
       );
-      set({ donorRequests: res.data.data, isLoading: false });
+      const list = Array.isArray(res.data.data) ? res.data.data : (res.data.data?.docs || []);
+      set({ donorRequests: list, isLoading: false });
       return res.data.data;
     } catch (err) {
       set({
@@ -132,7 +133,8 @@ const donorRequestStore = create((set, get) => ({
           params: filters
         }
       );
-      set({ donorRequests: res.data.data, isLoading: false });
+      const list = Array.isArray(res.data.data) ? res.data.data : (res.data.data?.docs || []);
+      set({ donorRequests: list, isLoading: false });
       return res.data.data;
     } catch (err) {
       set({

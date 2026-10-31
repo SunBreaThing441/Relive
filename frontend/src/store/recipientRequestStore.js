@@ -52,7 +52,8 @@ const recipientRequestStore = create((set, get) => ({
           params: filters
         }
       );
-      set({ recipientRequests: res.data.data, isLoading: false });
+      const list = Array.isArray(res.data.data) ? res.data.data : (res.data.data?.docs || []);
+      set({ recipientRequests: list, isLoading: false });
       return res.data.data;
     } catch (err) {
       set({
@@ -76,7 +77,8 @@ const recipientRequestStore = create((set, get) => ({
           params: filters
         }
       );
-      set({ recipientRequests: res.data.data, isLoading: false });
+      const list = Array.isArray(res.data.data) ? res.data.data : (res.data.data?.docs || []);
+      set({ recipientRequests: list, isLoading: false });
       return res.data.data;
     } catch (err) {
       set({
@@ -156,7 +158,8 @@ const recipientRequestStore = create((set, get) => ({
           params: filters
         }
       );
-      set({ recipientRequests: res.data.data, isLoading: false });
+      const list = Array.isArray(res.data.data) ? res.data.data : (res.data.data?.docs || []);
+      set({ recipientRequests: list, isLoading: false });
       return res.data.data;
     } catch (err) {
       set({

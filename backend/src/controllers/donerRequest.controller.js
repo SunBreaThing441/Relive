@@ -93,8 +93,8 @@ const getAdminDonorRequests = asyncHandler(async (req, res) => {
         limit: parseInt(limit),
         sort: { createdAt: -1 },
         populate: [
-            { path: "organType", select: "name description" },
-            { path: "doner", select: "bloodGroup location age gender" },
+            { path: "organType", select: "type" },
+            { path: "doner", select: "bloodGroup location age gender", populate: { path: "user", select: "fullName email" } },
             { 
                 path: "admin", 
                 populate: { 
@@ -183,8 +183,8 @@ const getAllDonorRequests = asyncHandler(async (req, res) => {
         limit: parseInt(limit),
         sort: { createdAt: -1 },
         populate: [
-            { path: "organType", select: "name description" },
-            { path: "doner", select: "bloodGroup location age gender" },
+            { path: "organType", select: "type" },
+            { path: "doner", select: "bloodGroup location age gender", populate: { path: "user", select: "fullName email" } },
             { 
                 path: "admin", 
                 populate: { 

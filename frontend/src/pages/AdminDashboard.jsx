@@ -27,21 +27,21 @@ const AdminDashboard = () => {
   const stats = [
     { 
       label: 'Total Donors', 
-      value: donorReqs.length, 
+      value: (Array.isArray(donorReqs) ? donorReqs : (donorReqs?.docs || [])).length, 
       icon: Heart, 
       color: 'text-blue-600', 
       bg: 'bg-blue-50' 
     },
     { 
       label: 'Total Patients', 
-      value: recipientReqs.length, 
+      value: (Array.isArray(recipientReqs) ? recipientReqs : (recipientReqs?.docs || [])).length, 
       icon: Users, 
       color: 'text-green-600', 
       bg: 'bg-green-50' 
     },
     { 
       label: 'Pending Review', 
-      value: [...donorReqs, ...recipientReqs].filter(req => 
+      value: [...(Array.isArray(donorReqs) ? donorReqs : (donorReqs?.docs || [])), ...(Array.isArray(recipientReqs) ? recipientReqs : (recipientReqs?.docs || []))].filter(req => 
         req.adminConfirmation === 'pending').length, 
       icon: Clock4, 
       color: 'text-yellow-600', 
@@ -95,27 +95,27 @@ const AdminDashboard = () => {
 
   // Combine and filter applications
   const allApplications = [
-    ...donorReqs.map(req => ({
+    ...(Array.isArray(donorReqs) ? donorReqs : (donorReqs?.docs || [])).map(req => ({
       id: req._id,
-      name: req.fullName,
-      email: req.email,
+      name: req.fullName || req.doner?.user?.fullName || req.recipient?.user?.fullName || "User",
+      email: req.email || req.doner?.user?.email || req.recipient?.user?.email || "N/A",
       type: 'donor',
-      organ: req.organ,
-      blood: req.bloodGroup,
-      age: req.age,
+      organ: req.organ || req.organType?.type || "Organ",
+      blood: req.bloodGroup || req.doner?.bloodGroup || req.recipient?.bloodGroup || "-",
+      age: req.age || req.doner?.age || req.recipient?.age || "-",
       urgency: '-',
       status: req.adminConfirmation || 'Submitted',
       original: req
     })),
-    ...recipientReqs.map(req => ({
+    ...(Array.isArray(recipientReqs) ? recipientReqs : (recipientReqs?.docs || [])).map(req => ({
       id: req._id,
-      name: req.fullName,
-      email: req.email,
+      name: req.fullName || req.doner?.user?.fullName || req.recipient?.user?.fullName || "User",
+      email: req.email || req.doner?.user?.email || req.recipient?.user?.email || "N/A",
       type: 'patient',
-      organ: req.organ,
-      blood: req.bloodGroup,
-      age: req.age,
-      urgency: req.urgency || 'Medium',
+      organ: req.organ || req.organType?.type || "Organ",
+      blood: req.bloodGroup || req.doner?.bloodGroup || req.recipient?.bloodGroup || "-",
+      age: req.age || req.doner?.age || req.recipient?.age || "-",
+      urgency: req.urgencyLevel || req.urgency || "Medium",
       status: req.adminConfirmation || 'Submitted',
       original: req
     }))

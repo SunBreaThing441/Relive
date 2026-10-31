@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import Recipient from "../models/Recipient.model.js";
+import RecipientRequest from "../models/RecipientRequest.model.js";
 
 const createRecipient = asyncHandler(async (req, res) => {
     const { age, weight, height, gender, bloodGroup, contactInfo, location } = req.body;
@@ -52,8 +53,12 @@ const getRecipientProfile = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Recipient profile not found");
     }
 
+    const recipientObj = recipient.toObject();
+    const requests = await RecipientRequest.find({ recipient: recipient._id }).select("_id");
+    recipientObj.requests = requests.map(r => r._id);
+
     return res.status(200).json(
-        new ApiResponse(200, recipient, "Recipient profile retrieved successfully")
+        new ApiResponse(200, recipientObj, "Recipient profile retrieved successfully")
     );
 });
 

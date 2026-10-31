@@ -3,6 +3,7 @@ import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import Donor from "../models/Doner.model.js";
 import User from "../models/User.model.js";
+import DonerRequest from "../models/DonerRequest.model.js";
 
 const createDonor = asyncHandler(async (req, res) => {
     const { age, weight, height, gender, bloodGroup, contactInfo, location } = req.body;
@@ -53,8 +54,12 @@ const getDonorProfile = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Donor profile not found");
     }
 
+    const donorObj = donor.toObject();
+    const requests = await DonerRequest.find({ doner: donor._id }).select("_id");
+    donorObj.requests = requests.map(r => r._id);
+
     return res.status(200).json(
-        new ApiResponse(200, donor, "Donor profile retrieved successfully")
+        new ApiResponse(200, donorObj, "Donor profile retrieved successfully")
     );
 });
 
