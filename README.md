@@ -1,7 +1,7 @@
 # 🫀 Organ Donation & Transplant Matching System
 
 A *full-stack MERN platform* that connects *organ donors* with *recipients* through an intelligent *matching algorithm*.  
-Built for *NEXATHON 1.0, this project aims to **save lives* by making organ allocation *faster, smarter, and more transparent*.  
+Built for *Relive, this project aims to **save lives* by making organ allocation *faster, smarter, and more transparent*.  
 
 ---
 
